@@ -1,5 +1,5 @@
 #Temp file
-note\
+note/
 *.bin
 *.lst
 *.gas
@@ -11,7 +11,7 @@ bootpack.hrb
 haribote.sys
 
 #Tutorial
-30天自制操作系统.pdt
+30天自制操作系统.pdf
 
 #Vim swap file
 *.*~
