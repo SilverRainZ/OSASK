@@ -1,0 +1,15 @@
+#Temp file
+note\
+*.bin
+*.lst
+*.gas
+*.obj
+bootpack.nas
+bootpack.map
+bootpack.bim
+bootpack.hrb
+haribote.sys
+
+#Vim swap file
+*.*~
+*~
