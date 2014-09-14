@@ -1,0 +1,22 @@
+BootStrap
+vim 的转义使用反斜杠 将"/"替换为"\"  :1,$/\//\\/g
+http://blog.csdn.net/thimin/article/details/2313390
+加载到了 0c7c00
+vim :%s/;.*//g
+vim :%s/^/\t/g
+MOV	AX,0
+MOV	ES,AX
+MOV	AX,msg
+MOV	BP,AX	; ES:BP = 串地址
+MOV	CX,14	; 串长度
+MOV	AX,0x1301	;AH = 0x13，AL = 0x01
+MOV	BX,0x000c	; 页号BH = 0 黑底红字 BL = 0x0c
+MOV	DL,0
+INT	0x10
+
+Asmhead.nas 隐藏的细节 VGA 显示模式 实模式保护模式
+gas 汇编
+0x7c00 512 bit IPL
+0x270000~0x27ffff GDT
+0x26f800~0x26ffff IDT
+0x280000~0x2fffff bootpack.h
