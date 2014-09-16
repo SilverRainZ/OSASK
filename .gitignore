@@ -15,5 +15,7 @@ haribote.img
 30天自制操作系统.pdf
 
 #Vim swap file
+*.swp
+*.swo
 *.*~
 *~
