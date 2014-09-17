@@ -4,6 +4,7 @@ note/
 *.lst
 *.gas
 *.obj
+*.exe
 bootpack.nas
 bootpack.map
 bootpack.bim
