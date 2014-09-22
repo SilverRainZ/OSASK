@@ -4,6 +4,7 @@
 #day 08 05d
 #day 09 06a
 #day 09 06c
+#day 10 07a
 
 
 
@@ -53,4 +54,5 @@ Asmhead.nas 隐藏的细节 VGA 显示模式 实模式保护模式
 0x0026f800  ~   0x0026ffff IDT(2KB)    
 0x00280000  ~   0x002fffff bootpack.hrb(512KB)
 0x00300000  -   0x003FFFFF 栈及其他
+0x003c0000  ~   32KB       memman
 0x00400000      EMPTY

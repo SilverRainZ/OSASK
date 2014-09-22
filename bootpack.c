@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include "bootpack.h"
 
-unsigned int memtest(unsigned int start, unsigned int end);
-
 void HariMain(void)
 {
 	struct BOOTINFO *binfo = (struct BOOTINFO *) ADR_BOOTINFO; 
 	char s[40], mcursor[256],keybuf[32], mousebuf[128];
 	int mx, my, i;
+	unsigned int memtotal;
 	struct MOUSE_DEC mdec;
+	struct MEMMAN *memman = (struct MEMMAN *) MEMMAN_ADDR;
 
 	init_gdtidt();
     init_pic();
@@ -22,6 +22,10 @@ void HariMain(void)
 
     init_keyboard();
     enable_mouse(&mdec);
+	memtotal = memtest(0x00400000, 0xbfffffff);
+	memman_init(memman);
+	memman_free(memman, 0x00001000, 0x0009e000); /* 0x00001000 - 0x0009efff */
+	memman_free(memman, 0x00400000, memtotal - 0x00400000);
 
 	init_palette();
 	init_screen8(binfo->vram, binfo->scrnx, binfo->scrny);
@@ -32,10 +36,10 @@ void HariMain(void)
 	sprintf(s, "(%d, %d)", mx, my);
 	putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
 
-	i = memtest(0x00400000, 0xbfffffff) / (1024 * 1024);
-	sprintf(s, "memory %dMB", i);
+	sprintf(s, "memory %dMB   free : %dKB",
+			memtotal / (1024 * 1024), memman_total(memman) / 1024);
 	putfonts8_asc(binfo->vram, binfo->scrnx, 0, 32, COL8_FFFFFF, s);
-
+	
     for (;;) 
     {
 		io_cli();
@@ -98,37 +102,3 @@ void HariMain(void)
 	}
 }
 
-#define EFLAGS_AC_BIT		0x00040000
-#define CR0_CACHE_DISABLE	0x60000000
-
-unsigned int memtest(unsigned int start, unsigned int end)
-{
-	char flg486 = 0;
-	unsigned int eflg, cr0, i;
-
-	/* 检测CPU是386还是486 */
-	eflg = io_load_eflags();
-	eflg |= EFLAGS_AC_BIT; /* AC-bit = 1 */
-	io_store_eflags(eflg);
-	eflg = io_load_eflags();
-	if ((eflg & EFLAGS_AC_BIT) != 0) { /* 如果是386, 设定AC=1后,AC仍然会自动恢复为0*/
-		flg486 = 1;
-	}
-	eflg &= ~EFLAGS_AC_BIT; /* AC-bit = 0 */
-	io_store_eflags(eflg);
-
-	if (flg486 != 0) {
-		cr0 = load_cr0();
-		cr0 |= CR0_CACHE_DISABLE; /* 禁止高速缓存 */
-		store_cr0(cr0);
-	}
-
-	i = memtest_sub(start, end);
-
-	if (flg486 != 0) {
-		cr0 = load_cr0();
-		cr0 &= ~CR0_CACHE_DISABLE; /*  允许缓存 */
-		store_cr0(cr0);
-	}
-	return i;
-}
