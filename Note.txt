@@ -5,6 +5,9 @@
 #day 09 06a
 #day 09 06c
 #day 10 07a
+#day 10 07d
+#day 11 08g
+#
 
 
 
