@@ -22,8 +22,9 @@ void HariMain(void)
     io_sti();
    	fifo8_init(&keyfifo, 32, keybuf);   //初始化鼠标键盘的缓冲队列
 	fifo8_init(&mousefifo, 128, mousebuf);
-	io_out8(PIC0_IMR, 0xf9); /* */
-	io_out8(PIC1_IMR, 0xef); /* */
+    init_pit();
+	io_out8(PIC0_IMR, 0xf8); /* PIT 和PIC 1 和键盘 设置为许可 11111000 */
+	io_out8(PIC1_IMR, 0xef); /* 鼠标设置为许可 */
 
     init_keyboard();
     enable_mouse(&mdec);

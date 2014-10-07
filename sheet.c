@@ -97,7 +97,7 @@ void sheet_refreshmap(struct SHTCTL *ctl, int vx0, int vy0, int vx1, int vy1, in
 void sheet_refreshsub(struct SHTCTL *ctl, int vx0, int vy0, int vx1, int vy1, int h0, int h1)
 {
 	int h, bx, by, vx, vy, bx0, by0, bx1, by1;
-    unsigned char *buf, c, *vram = ctl->vram, *map = ctl -> map, sid;
+    unsigned char *buf, *vram = ctl->vram, *map = ctl -> map, sid;
 	struct SHEET *sht;
     /* 如果refresh的范围超过了画面则修正 */
 	if (vx0 < 0) { vx0 = 0; }
